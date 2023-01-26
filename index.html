@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TODO App</title>
+
+    <style>
+        .finished {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+
+<div id="main">
+    <div id="header">
+        <h1>TODO planner</h1>
+
+        <input id="add" type="text" placeholder="Enter activity"/>
+        <button id="add-button">Add</button>
+    </div>
+
+    <br><br>
+
+    <div id="content">
+
+        <div id="items" style="border: 1px solid black; min-height: 100px;">
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    const addItemInput = document.getElementById('add');
+    const addItemButton = document.getElementById('add-button');
+    const itemsContainer = document.getElementById('items');
+    let itemCounter = 0;
+
+    const addNew = () => {
+
+        if (addItemInput.value === '' || addItemInput.value === undefined || addItemInput.value === null) {
+            return;
+        }
+
+        itemCounter++;
+
+        let elementDiv = document.createElement('div');
+        elementDiv.setAttribute('class', 'entry');
+        elementDiv.setAttribute('id', `item-${itemCounter}`);
+
+        const elementDivInput = document.createElement('input');
+        elementDivInput.setAttribute('type', 'checkbox');
+        elementDivInput.setAttribute('name', `item-${itemCounter}`);
+        elementDivInput.addEventListener('click', checkIfChecked);
+
+        const elementDivLabel = document.createElement('label');
+        elementDivLabel.setAttribute('for', `item-${itemCounter}`);
+        elementDivLabel.addEventListener('click', checkOnClick);
+
+        const elementDivLabelContent = document.createTextNode(addItemInput.value);
+
+        const elementDivRemove = document.createElement('span');
+        elementDivRemove.append(document.createTextNode('x'));
+        elementDivRemove.setAttribute('style', 'color: red; float:right;');
+        elementDivRemove.addEventListener('click', removeElement);
+
+        elementDivLabel.append(elementDivLabelContent);
+        elementDiv.append(elementDivInput);
+        elementDiv.append(elementDivLabel);
+        elementDiv.append(elementDivRemove);
+
+        itemsContainer.append(elementDiv);
+    };
+
+    const checkIfChecked = (e) => {
+        // console.log(e.target);
+        // console.log(e.target.name);
+        // console.log(e.target.checked);
+
+        if (e.target.checked) {
+            e.target.nextElementSibling.classList.add('finished');
+        } else {
+            e.target.nextElementSibling.classList.remove('finished');
+        }
+    };
+
+    const checkOnClick = (e) => {
+        // console.log(e.target);
+        // console.log(e.target.previousElementSibling);
+
+        e.target.previousElementSibling.checked = !e.target.previousElementSibling.checked;
+
+        if (e.target.previousElementSibling.checked) {
+            e.target.classList.add('finished');
+        } else {
+            e.target.classList.remove('finished');
+        }
+    }
+
+    const removeElement = (e) => {
+        // console.log(e.target);
+        // console.log(e.target.parentElement);
+
+        e.target.parentElement.remove();
+    }
+
+    addItemButton.addEventListener('click', addNew);
+</script>
+
+</body>
+</html>
